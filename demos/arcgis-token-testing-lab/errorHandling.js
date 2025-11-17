@@ -21,7 +21,6 @@ let logging = function(element, msg){
   document.getElementById(element).innerHTML = `<p style="word-wrap: break-word;width:calc(1200px)">${msg}</p>`;
 }
 
-
 let handleArcGISAuthError = function (e, element) {
   let res;
     switch (e.code) {
@@ -30,26 +29,21 @@ let handleArcGISAuthError = function (e, element) {
         printError(res, element);
         break;
       
-        case "access-denied-error":
+      case "access-denied-error":
         res = "The user hit cancel on the authorization screen.";
         printError(res, element);
-      break;
+        break;
       
       default:
         printError(e, element);
-
-      break;
     }
-    // debugger
   }
 
 let handleError = function (e, element) {
   let res = null;
-  // console.error("Error type/enum = ",e.name);
-  // console.error("e = ",e);
   switch(e.name) {
     case ErrorTypes.ArcGISAccessDeniedError:
-    // handle a user denying an authorization request in an oAuth workflow
+      // handle a user denying an authorization request in an oAuth workflow
       printError(e, element);
       break;
   
@@ -74,10 +68,6 @@ let handleError = function (e, element) {
       // handle some other error (usually a network error)
   }
 }
- 
-
-
-
 
 export {
   handleError,

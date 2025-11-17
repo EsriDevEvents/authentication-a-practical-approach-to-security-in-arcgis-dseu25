@@ -1,12 +1,11 @@
-import { handleError, logging } from "./errorHandling";
-import { ACCOUNT_SETTINGS } from "./config";
 import { ArcGISIdentityManager } from "@esri/arcgis-rest-request";
+import { handleError } from "./errorHandling";
+import { ACCOUNT_SETTINGS } from "./config";
 
 // Attach a listener to the sign in buttons.
 document.getElementById('login').addEventListener('click', function (event) {
   
-  // Configure OAuth2 login
-  const product = document.getElementById("account-type").value;
+  const product = document.getElementById("accountType").value;
   if(!product){
     alert("Select a product, token");
     return false;
@@ -23,10 +22,9 @@ document.getElementById('login').addEventListener('click', function (event) {
   })
   .then(function (newSession) {
     // Upon a successful login, update the session with the new session.
-    document.getElementById("access-token").value = newSession.token
+    document.getElementById("accessToken").value = newSession.token
     document.getElementById("tokenEl").style.display = "block"
-    document.getElementById('run-btn').disabled = false
-    
+    document.getElementById('runBtn').disabled = false
   }).catch(e => {
     handleError(e, 'login');
   });

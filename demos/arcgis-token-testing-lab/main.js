@@ -1,8 +1,6 @@
-import { geocode } from "@esri/arcgis-rest-geocoding";
 import { ApiKeyManager, ArcGISIdentityManager, ApplicationCredentialsManager } from "@esri/arcgis-rest-request";
 import { handleError, printError, logging } from "./errorHandling";
 import { ACCOUNT_SETTINGS } from "./config";
-import { createNewService } from "./createFS";
 
 // load the calcite components
 import "@esri/calcite-components/dist/calcite/calcite.css";
@@ -17,11 +15,11 @@ let token = null;
 let serviceName = null;
 let settings = null;
 
-document.getElementById("account-type").addEventListener("calciteSelectChange",  (e) => {
+document.getElementById("accountType").addEventListener("calciteSelectChange",  (e) => {
   product = e.target.value;
   updateInterface();
 });
-document.getElementById("token-type").addEventListener("calciteSelectChange",  (e) => {
+document.getElementById("tokenType").addEventListener("calciteSelectChange",  (e) => {
   tokenType = e.target.value
   updateInterface();
 });
@@ -32,38 +30,29 @@ function updateInterface(){
     settings = ACCOUNT_SETTINGS[product];
     
     // Token OAuth login if OAuth type selected
-    document.getElementById("loginEl").style.display= tokenType=="oauth-token"? "block":"none";
-    document.getElementById("access-token").value = "";
+    document.getElementById("loginEl").style.display= "none";
     document.getElementById("tokenEl").style.display = "none";
-    
-    //If Username and password is selected, disable adding token
-    if(tokenType=="get-token"){
-      
-      document.getElementById('run-btn').disabled = false
-    }else if(tokenType=="app-credentials" || tokenType=="api-key"){
-      document.getElementById('run-btn').disabled = false
-      if(tokenType=="api-key"){
-        
-        document.getElementById("tokenEl").style.display = "block";
-        document.getElementById("access-token").value = settings.apiKey
-      }
-    }else{  
-      document.getElementById("access-token").disabled = false
+    document.getElementById("accessToken").value = "";
+    document.getElementById('runBtn').disabled = false
+
+    if(tokenType=="api-key"){
+      document.getElementById("tokenEl").style.display = "block";
+      document.getElementById("accessToken").value = settings.apiKey
+    }else if (tokenType=="oauth-token"){
+      document.getElementById('runBtn').disabled = true;
+      document.getElementById("loginEl").style.display= "block";
     }
   }
   
 }
 
-document.getElementById("run-btn").addEventListener("click",async function(e) {
+document.getElementById("runBtn").addEventListener("click",async function(e) {
   
   // Clean previous results
   const els = document.getElementsByClassName("response");
   [].forEach.call(els, function (el) {el.innerHTML = ""});
   
-  // product = document.getElementById("account-type").value;
-  // tokenType = document.getElementById("token-type").value;
-  
-  serviceName = document.getElementById("feature-service-name").value;
+  serviceName = document.getElementById("featureServiceName").value;
   
   let authentication;
 
@@ -73,49 +62,49 @@ document.getElementById("run-btn").addEventListener("click",async function(e) {
       
       case 'get-token':
       
-      // 1. 👤 OAuth 2.0: Resource owner password credentials grant
-      authentication = await ArcGISIdentityManager.signIn({
-        username: settings.username,
-        password: settings.password,
-        portal: `https://${settings.portalUrl}/sharing/rest`
-      });
-      
-      
-      document.getElementById("tokenEl").style.display = "block";
-      document.getElementById("access-token").value = authentication.token;
-      // authentication = new ArcGISIdentityManager({
-      //   token, // Construct from an existing token
-      //   username: settings.username,
-      //   portal:  `https://${settings.portalUrl}/sharing/rest`
-      // });
-      runTests(authentication);
+        // 1. 👤 OAuth 2.0: Resource owner password credentials grant
+        authentication = await ArcGISIdentityManager.signIn({
+          username: settings.username,
+          password: settings.password,
+          portal: `https://${settings.portalUrl}/sharing/rest`
+        });
+        
+        
+        document.getElementById("tokenEl").style.display = "block";
+        document.getElementById("accessToken").value = authentication.token;
+        // authentication = new ArcGISIdentityManager({
+        //   token, // Construct from an existing token
+        //   username: settings.username,
+        //   portal:  `https://${settings.portalUrl}/sharing/rest`
+        // });
+        runTests(authentication);
 
-      break;
+        break;
 
       case 'app-credentials':
       
-      // 2. 🖥️ OAuth 2.0 App credentials
-      authentication = ApplicationCredentialsManager.fromCredentials({
-        clientId: settings.clientId,
-        clientSecret: settings.clientSecret,
-        portal:  `https://${settings.portalUrl}/sharing/rest`
-      });
-      token = await authentication.getToken()
-      document.getElementById("tokenEl").style.display = "block";
-      document.getElementById("access-token").value = authentication.token;
-      // Construct token manually added to the input field
-      // authentication = new ArcGISIdentityManager({
-      //   token,
-      //   portal:  `https://${settings.portalUrl}/sharing/rest`
-      // });
-      runTests(authentication);
+        // 2. 🖥️ OAuth 2.0 App credentials
+        authentication = ApplicationCredentialsManager.fromCredentials({
+          clientId: settings.clientId,
+          clientSecret: settings.clientSecret,
+          portal:  `https://${settings.portalUrl}/sharing/rest`
+        });
+        token = await authentication.getToken()
+        document.getElementById("tokenEl").style.display = "block";
+        document.getElementById("accessToken").value = authentication.token;
+        // Construct token manually added to the input field
+        // authentication = new ArcGISIdentityManager({
+        //   token,
+        //   portal:  `https://${settings.portalUrl}/sharing/rest`
+        // });
+        runTests(authentication);
 
-      break;
+        break;
       
       case 'oauth-token':
       
       // 3. 🧑‍💻 OAuth 2.0 User authentication - Authentication Grant Flow with PKCE (SHA256) | ⭐ Recommended
-      token = document.getElementById("access-token").value;
+      token = document.getElementById("accessToken").value;
       authentication = ArcGISIdentityManager.fromToken({
         token,
         portal: `https://${settings.portalUrl}/sharing/rest`,
@@ -139,8 +128,9 @@ document.getElementById("run-btn").addEventListener("click",async function(e) {
   }catch(e){
     console.error(e);
   }
-})
+});
 
+import { geocode } from "@esri/arcgis-rest-geocoding";
 let testGeocode = function(authentication){
   const element = 'geocoding-response';
   geocode({
@@ -157,6 +147,7 @@ let testGeocode = function(authentication){
   });
 }
 
+
 import { getPortal } from "@esri/arcgis-rest-portal";
 let testGetPortal = async function(authentication){
   const element = 'portal-info-response';
@@ -169,6 +160,7 @@ let testGetPortal = async function(authentication){
     printError(e, element);
   }
 };
+
 
 import { searchItems } from "@esri/arcgis-rest-portal";
 let testOwnedItems = async function(authentication){
@@ -193,8 +185,9 @@ let testOwnedItems = async function(authentication){
     logging(element, res);
   }
   
-  
 }
+
+import { createNewService } from "./createFS";
 
 function runTests(authentication){
   console.log("Tests running...");
