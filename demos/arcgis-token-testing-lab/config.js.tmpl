@@ -1,0 +1,31 @@
+import { CREDENTIALS } from "./.env/env";
+
+const redirectUri = 'http://localhost:5173/completeOAuth/authenticate.html?product';
+
+const ACCOUNT_SETTINGS = {
+  "arcgis-enterprise":{
+    username: "USERNAME",
+    password: CREDENTIALS.enterprise,
+    portalUrl: "YOUR_DOMAIN.ORG/portal",
+    clientId: "CLIENT_ID",
+    redirectUri: `${redirectUri}=arcgis-enterprise`
+  },
+  "arcgis-online":{
+    username: "USERNAME",
+    password: CREDENTIALS.online,
+    portalUrl: "ORGID.maps.arcgis.com",
+    clientId: "CLIENT_ID",
+    redirectUri: `${redirectUri}=arcgis-online`
+  },
+  "arcgis-location-platform":{
+    username: "USERNAME",
+    password: CREDENTIALS.platform,
+    portalUrl: "ORGID.maps.arcgis.com",
+    clientId: "CLIENT_ID",
+    redirectUri: `${redirectUri}=arcgis-location-platform`
+  },
+};
+
+export { 
+  ACCOUNT_SETTINGS
+};

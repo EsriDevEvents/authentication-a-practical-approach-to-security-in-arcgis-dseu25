@@ -1,0 +1,21 @@
+{
+  "name": "arcgis-token-testing-lab",
+  "version": "1.0.0",
+  "description": "",
+  "license": "Apache-2.0",
+  "author": "Raul Jimenez",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "npx vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@arcgis/map-components": "^4.34.9",
+    "@esri/arcgis-rest-feature-service": "^4.4.1",
+    "@esri/arcgis-rest-geocoding": "^4.0.3",
+    "@esri/arcgis-rest-portal": "^4.7.0",
+    "@esri/arcgis-rest-request": "^4.7.3",
+    "@esri/calcite-components": "^3.3.3"
+  }
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>🔬 ArcGIS Token Testing Lab</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<script>
+  
+</script>
+<body>
+  <div class="grid-container">
+    <h1>🔬 ArcGIS Token Testing Lab</h1>
+    <form>
+      <p>
+        Select: 
+      </p>
+      <p>
+        <calcite-select id="account-type">
+          <calcite-option value="" selected>Select the account type</calcite-option>    
+          <calcite-option value="arcgis-enterprise">ArcGIS Enterprise</calcite-option>
+          <calcite-option value="arcgis-online">ArcGIS Online</calcite-option>
+          <calcite-option value="arcgis-location-platform" >ArcGIS Location Platform</calcite-option>
+        </calcite-select>
+      </p>
+      <p>
+        <calcite-select id="token-type">
+          <calcite-option value="">Select the token type</calcite-option>    
+          <calcite-option value="oauth-token">OAuth2 access token</calcite-option>
+          <calcite-option value="api-key">API key</calcite-option>
+          <calcite-option value="app-credentials">App credential</calcite-option>
+          <calcite-option value="get-token">Username and password</calcite-option>
+        </calcite-select>
+      </p>   
+    </p>
+    <p>
+    <p id="loginEl" style="display:none">
+      <calcite-button id="login">Sign In (OAuth2.0 with PKCE)</calcite-button>
+    </p>
+    </p>
+    <div id="tokenEl" style="display:none">
+      <p>
+        Token:
+      </p>
+      <p>
+        <calcite-input-text id="access-token" placeholder="Add your access token" value=""></calcite-input-text>
+      </p>
+    </div>
+    <p>
+      <calcite-input-text id="feature-service-name" placeholder="(e.g., New_service_from_REST_JS)" value="New_service_from_REST_JS"></calcite-input-text>
+    </p>
+    
+    <calcite-button id="run-btn" disabled>Run tests</calcite-button>
+  </form>
+  <!-- <arcgis-map></arcgis-map> -->
+  <head>
+    <style>
+      calcite-table {
+        width: 100%;
+      }
+    </style>
+  </head>
+  
+  <h2>Tests</h2>
+  <calcite-table caption="Simple table" striped="true">
+    <calcite-table-row slot="table-header">
+      <calcite-table-header heading="Test"></calcite-table-header>
+      <calcite-table-header heading="Response"></calcite-table-header>
+    </calcite-table-row>
+    
+    <calcite-table-row>
+      <calcite-table-cell>Geocoding</calcite-table-cell>
+      <calcite-table-cell id="geocoding-response" class="response"></calcite-table-cell>
+    </calcite-table-row>
+    <calcite-table-row>
+      <calcite-table-cell>Create Feature Service</calcite-table-cell>
+      <calcite-table-cell id="create-feature-service-response" class="response"></calcite-table-cell>
+    </calcite-table-row>
+    
+    <calcite-table-row>
+      <calcite-table-cell>Query owned items</calcite-table-cell>
+      <calcite-table-cell id="query-items-response" class="response"></calcite-table-cell>
+    </calcite-table-row>
+    
+    <calcite-table-row>
+      <calcite-table-cell>Portal Info</calcite-table-cell>
+      <calcite-table-cell id="portal-info-response" class="response"></calcite-table-cell>
+    </calcite-table-row>
+  </calcite-table>
+  
+  
+</div>
+
+<script src="config.js" type="module"></script>
+<script src="main.js" type="module"></script>
+<script src="oauthLogin.js" type="module"></script>
+
+</body>
+</html>
