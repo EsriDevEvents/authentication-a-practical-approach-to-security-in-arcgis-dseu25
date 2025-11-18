@@ -14,6 +14,7 @@ dist-ssr
 .env
 config.js
 config_backup.js
+script.md
 
 # Editor directories and files
 .vscode/*
