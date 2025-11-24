@@ -16,3 +16,7 @@
 --calcite-dropdown-background-color{
   background-color: white;
 }
+
+calcite-table {
+  width: 100%;
+}
