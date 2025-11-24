@@ -1,6 +1,7 @@
 import { ApiKeyManager, ArcGISIdentityManager, ApplicationCredentialsManager } from "@esri/arcgis-rest-request";
 import { handleError, printError, logging } from "./errorHandling";
 import { ACCOUNT_SETTINGS } from "./config";
+import { createNewService } from "./createFS";
 
 // load the calcite components
 import "@esri/calcite-components/dist/calcite/calcite.css";
@@ -42,10 +43,10 @@ function updateInterface(){
       document.getElementById('runBtn').disabled = true;
       document.getElementById("loginEl").style.display= "block";
     }
-  }
-  
+  } 
 }
 
+// Init auth manager and run tests
 document.getElementById("runBtn").addEventListener("click",async function(e) {
   
   // Clean previous results
@@ -186,8 +187,6 @@ let testOwnedItems = async function(authentication){
   }
   
 }
-
-import { createNewService } from "./createFS";
 
 function runTests(authentication){
   console.log("Tests running...");
